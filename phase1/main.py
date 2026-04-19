@@ -1,13 +1,15 @@
 from preprocessing import load_and_preprocess
 from models.nb import GaussianNB
 from models.perceptron import Perceptron
+from models.knn import KNN
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 X_train, X_test, y_train, y_test = load_and_preprocess()
 
 models = {
     "Naive Bayes": GaussianNB(),
-    "Perceptron": Perceptron()
+    "Perceptron": Perceptron(),
+    "KNN": KNN(k=5)
 }
 
 results = {}

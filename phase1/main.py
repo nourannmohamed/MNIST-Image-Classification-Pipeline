@@ -55,3 +55,11 @@ X_train = X_train[:, mask]
 X_test  = X_test[:, mask]
 
 print("After preprocessing:", X_train.shape)
+
+#testing the naive bayes model
+from models.nb import GaussianNB
+model = GaussianNB()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+from sklearn.metrics import accuracy_score
+print("Accuracy:", accuracy_score(y_test, y_pred))

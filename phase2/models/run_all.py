@@ -19,16 +19,16 @@ y_test  = np.load("phase2/feature_data/y_test.npy")
 
 
 models = {
-    "KNN": KNN(k=5),
     "Naive Bayes": GaussianNB(),
     "Perceptron": MulticlassPerceptron(lr=0.01, n_iters=500),
     "Multinomial": MultinomialRegression(lr=0.01, n_iters=500),
-    "SVM": MulticlassSVM()
+    "SVM": MulticlassSVM(),
+    "KNN": KNN(k=5)
 }
 
 results = {}
 
-
+#Evaluation of models
 for name, model in models.items():
     print("\n" + "="*30)
     print(f"Model: {name}")

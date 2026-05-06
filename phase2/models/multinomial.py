@@ -1,7 +1,7 @@
 import numpy as np
 
 class MultinomialRegression:
-    def __init__(self, lr=0.01, n_iters=500):
+    def __init__(self, lr=0.1, n_iters=500):
         self.lr = lr
         self.n_iters = n_iters
         self.W = None   # weights (classes x features)

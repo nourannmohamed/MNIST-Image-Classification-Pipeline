@@ -2,7 +2,7 @@
 import numpy as np
 
 class MulticlassPerceptron:
-    def __init__(self, lr=0.01, n_iters=500):
+    def __init__(self, lr=0.001, n_iters=500):
         self.lr = lr
         self.n_iters = n_iters
         self.W = None

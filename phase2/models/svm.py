@@ -2,7 +2,7 @@ import numpy as np
 
 
 class MulticlassSVM:
-    def __init__(self, lr=0.001, lambda_param=0.01, n_iters=100):
+    def __init__(self, lr=0.001, lambda_param=0.001, n_iters=100):
         self.lr = lr        #learning rate
         self.lambda_param = lambda_param     #regularization strength  , Lambda controls overfitting
         self.n_iters = n_iters  #number of passess over dataset

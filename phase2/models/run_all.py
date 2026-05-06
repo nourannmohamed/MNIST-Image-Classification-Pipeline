@@ -20,8 +20,8 @@ y_test  = np.load("phase2/feature_data/y_test.npy")
 
 models = {
     "Naive Bayes": GaussianNB(),
-    "Perceptron": MulticlassPerceptron(lr=0.01, n_iters=500),
-    "Multinomial": MultinomialRegression(lr=0.01, n_iters=500),
+    "Perceptron": MulticlassPerceptron(lr=0.001, n_iters=500),
+    "Multinomial": MultinomialRegression(lr=0.1, n_iters=500),
     "SVM": MulticlassSVM(),
     "KNN": KNN(k=5)
 }

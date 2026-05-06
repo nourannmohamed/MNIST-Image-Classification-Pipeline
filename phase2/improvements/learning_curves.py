@@ -32,9 +32,9 @@ train_sizes = [1000, 3000, 5000, 10000, len(X_train)]
 #Models
 models = {
     "Naive Bayes": GaussianNB(),
-    "Perceptron": MulticlassPerceptron(lr=0.01, n_iters=200),
-    "Multinomial": MultinomialRegression(lr=0.01, n_iters=300),
-    "SVM": MulticlassSVM(lambda_param=0.01, lr=0.001, n_iters=100),
+    "Perceptron": MulticlassPerceptron(lr=0.001, n_iters=200),
+    "Multinomial": MultinomialRegression(lr=0.1, n_iters=300),
+    "SVM": MulticlassSVM(lambda_param=0.001, lr=0.001, n_iters=100),
     "KNN": KNN(k=5)
 }
 

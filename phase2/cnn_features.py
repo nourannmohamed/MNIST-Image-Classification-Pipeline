@@ -1,9 +1,10 @@
+import os
 import numpy as np
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Input
 from tensorflow.keras.optimizers import Adam
 
-from preprocessing import load_and_preprocess
+from phase2.preprocessing import load_and_preprocess
 
 
 def build_cnn_feature_extractor():
@@ -59,6 +60,8 @@ def extract_and_save_features():
 
     print("Training CNN...")
     model.fit(X_train, y_train, epochs=3, batch_size=64, validation_split=0.1)
+    os.makedirs("saved_models", exist_ok=True)
+    model.save_weights("saved_models/cnn_weights.weights.h5")
 
     # =========================
     # CREATE FEATURE EXTRACTOR MODEL

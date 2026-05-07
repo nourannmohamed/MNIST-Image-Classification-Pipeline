@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import ImageFilter
 import cv2
 
-ROOT_DIR = Path(r"C:\Users\B2B\Documents\GitHub\MNIST-Image-Classification-Pipeline")
+ROOT_DIR = Path(__file__).resolve().parent
 
 sys.path.insert(0, str(ROOT_DIR / "phase2" / "models"))
 sys.path.insert(0, str(ROOT_DIR / "phase2"))
@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Input
 
-from svm import MulticlassSVM
+from phase2.models.svm import MulticlassSVM
 
 
 # =====================================

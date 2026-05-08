@@ -6,6 +6,7 @@ import cv2
 
 ROOT_DIR = Path(__file__).resolve().parent
 
+# add project folders to python path
 sys.path.insert(0, str(ROOT_DIR / "phase2" / "models"))
 sys.path.insert(0, str(ROOT_DIR / "phase2"))
 sys.path.insert(0, str(ROOT_DIR))
@@ -22,9 +23,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Input
 from phase2.models.svm import MulticlassSVM
 
 
-# =====================================
-# PAGE CONFIG
-# =====================================
+# set streamlit page settings
 st.set_page_config(
     page_title="MNIST AI Recognition",
     page_icon="🧠",
@@ -33,9 +32,7 @@ st.set_page_config(
 )
 
 
-# =====================================
-# CUSTOM CSS
-# =====================================
+# add custom page styling
 st.markdown(
     """
     <style>
@@ -84,9 +81,7 @@ st.markdown(
 )
 
 
-# =====================================
-# HEADER
-# =====================================
+# show app title
 st.markdown('<div class="title">🧠 MNIST Digit Recognition</div>', unsafe_allow_html=True)
 
 st.markdown(
@@ -95,9 +90,7 @@ st.markdown(
 )
 
 
-# =====================================
-# SIDEBAR
-# =====================================
+# create sidebar navigation
 st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
@@ -117,63 +110,69 @@ st.sidebar.info(
 )
 
 
-# =====================================
-# BUILD CNN FEATURE EXTRACTOR
-# =====================================
+# build cnn feature extractor
 @st.cache_resource
 def build_feature_extractor():
-
+    # input image shape
     input_layer = Input(shape=(28, 28, 1))
 
+    # first convolution block
     x = Conv2D(32, (3, 3), activation='relu')(input_layer)
     x = MaxPooling2D((2, 2))(x)
 
+    # second convolution block
     x = Conv2D(64, (3, 3), activation='relu')(x)
     x = MaxPooling2D((2, 2))(x)
 
+    # flatten image maps to vector
     x = Flatten()(x)
 
+    # feature layer used by svm
     feature_layer = Dense(128, activation='relu')(x)
 
+    # output layer needed to load cnn weights
     output_layer = Dense(10, activation='softmax')(feature_layer)
 
+    # build same cnn structure used during training
     model = Model(inputs=input_layer, outputs=output_layer)
 
+    # load trained cnn weights
     model.load_weights(
         ROOT_DIR / "saved_models" / "cnn_weights.weights.h5"
     )
 
+    # create model that outputs features only
     feature_model = Model(inputs=model.input, outputs=feature_layer)
 
     return feature_model
 
 
-# =====================================
-# LOAD SVM
-# =====================================
+# load saved svm model
 @st.cache_resource
 def load_svm():
-
+    # create svm object
     svm = MulticlassSVM()
 
+    # load trained weights
     svm.W = np.load(ROOT_DIR / "saved_models" / "svm_weights.npy")
 
     return svm
 
 
+# load models once and cache them
 feature_model = build_feature_extractor()
 svm_model = load_svm()
 
 
-# =====================================
-# PREPROCESS IMAGE
-# =====================================
+# preprocess drawn image
 def preprocess_image(img):
-
+    # convert image to grayscale
     img = img.convert("L")
 
+    # convert image to numpy array
     img = np.array(img)
 
+    # normalize then smooth image
     img = img.astype("float32") / 255.0
     img = cv2.bilateralFilter(
         (img * 255).astype(np.uint8),
@@ -184,11 +183,14 @@ def preprocess_image(img):
 
     img = img.astype("float32") / 255.0
 
+    # find non-empty pixels
     coords = np.argwhere(img > 0.1)
 
+    # return blank image if nothing was drawn
     if len(coords) == 0:
         return np.zeros((1, 28, 28, 1))
 
+    # crop around the digit
     y_min, x_min = coords.min(axis=0)
     y_max, x_max = coords.max(axis=0)
 
@@ -197,22 +199,23 @@ def preprocess_image(img):
     pil_img = Image.fromarray((img * 255).astype(np.uint8))
 
 
+    # resize digit to 20x20 like mnist center area
     pil_img = pil_img.resize((20, 20))
 
     img = np.array(pil_img).astype("float32") / 255.0
 
+    # place digit in center of 28x28 image
     final_img = np.zeros((28, 28))
 
     final_img[4:24, 4:24] = img
 
+    # reshape for cnn input
     final_img = final_img.reshape(1, 28, 28, 1)
 
     return final_img
 
 
-# =====================================
-# HOME PAGE
-# =====================================
+# home page
 if page == "🏠 Home":
 
     st.markdown(
@@ -230,9 +233,7 @@ if page == "🏠 Home":
 
     st.markdown("---")
 
-    # =====================================
-    # PHASE 1
-    # =====================================
+    # show phase 1 section
     st.markdown(
         """
         <div style="
@@ -268,9 +269,7 @@ if page == "🏠 Home":
         unsafe_allow_html=True
     )
 
-    # =====================================
-    # PHASE 2
-    # =====================================
+    # show phase 2 section
     st.markdown(
         """
         <div style="
@@ -306,9 +305,7 @@ if page == "🏠 Home":
 
     st.markdown("---")
 
-    # =====================================
-    # DATASET SECTION
-    # =====================================
+    # show dataset section
     st.markdown(
         '<div class="section-header">📊 Dataset</div>',
         unsafe_allow_html=True
@@ -341,9 +338,7 @@ if page == "🏠 Home":
     )
 
 
-# =====================================
-# PREDICTION PAGE
-# =====================================
+# prediction page
 elif page == "✍ Predict Digit":
 
     st.markdown('<div class="section-header">Draw a Digit</div>', unsafe_allow_html=True)
@@ -351,7 +346,7 @@ elif page == "✍ Predict Digit":
     col1, col2 = st.columns([1, 1])
 
     with col1:
-
+        # drawing canvas for user digit
         canvas_result = st_canvas(
             fill_color="black",
             stroke_width=5,
@@ -366,25 +361,30 @@ elif page == "✍ Predict Digit":
         predict_button = st.button("🔍 Predict Digit")
 
     with col2:
-
+        # run prediction when button is clicked
         if predict_button:
 
             if canvas_result.image_data is not None:
-
+                # convert canvas to image
                 img = Image.fromarray(
                     canvas_result.image_data.astype("uint8")
                 )
 
+                # preprocess image for cnn
                 processed = preprocess_image(img)
 
+                # extract cnn features
                 features = feature_model.predict(processed, verbose=0)
 
+                # predict digit with svm
                 prediction = svm_model.predict(features)[0]
 
+                # compute confidence scores
                 scores = np.dot(features, svm_model.W.T)[0]
 
                 probs = np.exp(scores) / np.sum(np.exp(scores))
 
+                # get top 3 predicted classes
                 top3 = np.argsort(probs)[-3:][::-1]
 
                 st.markdown(
@@ -399,6 +399,7 @@ elif page == "✍ Predict Digit":
 
                 st.markdown("### Confidence Scores")
 
+                # show top 3 confidence scores
                 for idx in top3:
                     st.progress(float(probs[idx]))
                     st.write(f"Digit {idx}: {probs[idx]*100:.2f}%")
@@ -407,6 +408,7 @@ elif page == "✍ Predict Digit":
 
                 st.subheader("Processed Image")
 
+                # display processed 28x28 image
                 fig, ax = plt.subplots(figsize=(3, 3))
 
                 ax.imshow(processed[0].reshape(28, 28), cmap='gray')
@@ -416,9 +418,7 @@ elif page == "✍ Predict Digit":
                 st.pyplot(fig)
 
 
-# =====================================
-# PERFORMANCE PAGE
-# =====================================
+# performance page
 elif page == "📊 Model Performance":
 
     st.markdown('<div class="section-header">Model Comparison</div>', unsafe_allow_html=True)
@@ -436,6 +436,7 @@ elif page == "📊 Model Performance":
 
     st.markdown("---")
 
+    # show model type comparison
     st.table({
         "Model": [
             "KNN",
@@ -455,13 +456,12 @@ elif page == "📊 Model Performance":
     })
 
 
-# =====================================
-# PIPELINE PAGE
-# =====================================
+# pipeline page
 elif page == "⚙ Pipeline Overview":
 
     st.markdown('<div class="section-header">System Pipeline</div>', unsafe_allow_html=True)
 
+    # show project pipeline steps
     st.code(
         '''
 Input Image

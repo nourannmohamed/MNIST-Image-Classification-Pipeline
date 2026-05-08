@@ -4,31 +4,22 @@ from sklearn.model_selection import train_test_split
 
 
 def load_and_preprocess(test_size=0.2, random_state=42):
-    # =========================
-    # LOAD DATA
-    # =========================
+    #load mnist train and test data
     (X_train_full, y_train_full), (X_test_full, y_test_full) = mnist.load_data()
 
-    # Combine datasets (optional but keeps consistency with Phase 1)
+    #combine datasets to split them again like phase1
     X = np.concatenate([X_train_full, X_test_full], axis=0)
     y = np.concatenate([y_train_full, y_test_full], axis=0)
 
     print("Original dataset shape:", X.shape)
 
-    # =========================
-    # NORMALIZATION
-    # =========================
+    #normalize pixels to [0, 1]
     X = X / 255.0
 
-    # =========================
-    # RESHAPE FOR CNN
-    # =========================
-    # From (n, 28, 28) → (n, 28, 28, 1)
+    #reshape images for cnn input
     X = X.reshape(-1, 28, 28, 1)
 
-    # =========================
-    # TRAIN-TEST SPLIT
-    # =========================
+    #split data into train and test sets
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
@@ -43,9 +34,7 @@ def load_and_preprocess(test_size=0.2, random_state=42):
     return X_train, X_test, y_train, y_test
 
 
-# =========================
-# OPTIONAL: For models (flattened version)
-# =========================
+#flatten images for non-cnn models
 def get_flattened_data(X_train, X_test):
     X_train_flat = X_train.reshape(X_train.shape[0], -1)
     X_test_flat = X_test.reshape(X_test.shape[0], -1)
@@ -53,9 +42,7 @@ def get_flattened_data(X_train, X_test):
     return X_train_flat, X_test_flat
 
 
-# =========================
-# RUN TEST
-# =========================
+#run quick test for preprocessing
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = load_and_preprocess()
 

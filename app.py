@@ -110,7 +110,7 @@ st.sidebar.info(
 )
 
 
-# build cnn feature extractor
+#build cnn feature extractor
 @st.cache_resource
 def build_feature_extractor():
     # input image shape

@@ -10,6 +10,8 @@ In Phase 1, the problem is treated as binary classification: detecting whether a
 
 In Phase 2, the project expands to full multiclass classification for digits `0` through `9`. A CNN is used as a feature extractor, then the extracted feature vectors are classified using custom multiclass models such as SVM, Perceptron, Multinomial Regression, KNN, and Naive Bayes.
 
+Model evaluation metrics such as accuracy, confusion matrix, precision, recall, F1-score, and classification report are implemented manually in `phase1/metrics.py`.
+
 The project also includes a Streamlit web app where users can draw a digit on a canvas and get a prediction from the trained CNN feature extractor and SVM classifier.
 
 ## Requirements
@@ -62,7 +64,7 @@ The project uses these external Python packages:
 - `opencv-python` - image filtering and preprocessing
 - `matplotlib` - plotting processed images and learning curves
 - `tensorflow` - MNIST dataset loading and CNN feature extractor
-- `scikit-learn` - train/test split, metrics, and cross-validation helpers
+- `scikit-learn` - train/test split and cross-validation helpers
 - `h5py` - reading TensorFlow/Keras `.h5` weight files
 
 ## Running the App

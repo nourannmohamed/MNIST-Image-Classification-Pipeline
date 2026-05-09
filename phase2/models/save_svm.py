@@ -17,7 +17,7 @@ print("Training SVM...")
 # create svm with chosen parameters
 model = MulticlassSVM(
     lr=0.001,
-    lambda_param=0.0001,
+    lambda_param=0.001,
     n_iters=100
 )
 

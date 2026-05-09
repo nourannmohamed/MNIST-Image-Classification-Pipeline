@@ -3,7 +3,7 @@ from models.nb import GaussianNB
 from models.perceptron import Perceptron
 from models.knn import KNN
 from models.logistic import LogisticRegression
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from metrics import accuracy_score, confusion_matrix, classification_report
 
 # load preprocessed binary mnist data
 X_train, X_test, y_train, y_test = load_and_preprocess()

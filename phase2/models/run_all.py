@@ -1,12 +1,12 @@
 import sys
 import os
 import numpy as np
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 
 #add project root so phase1 imports work
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
+from phase1.metrics import accuracy_score, confusion_matrix, classification_report
 from phase1.models.knn import KNN
 from phase1.models.nb import GaussianNB
 from perceptron import MulticlassPerceptron

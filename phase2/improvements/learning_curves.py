@@ -2,12 +2,12 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score
 
 # add project folders to python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
+from phase1.metrics import accuracy_score
 from phase1.models.knn import KNN
 from models.svm import MulticlassSVM
 from models.perceptron import MulticlassPerceptron

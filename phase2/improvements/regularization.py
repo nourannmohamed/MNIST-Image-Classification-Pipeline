@@ -1,12 +1,12 @@
 import sys
 import os
 import numpy as np
-from sklearn.metrics import accuracy_score
 
 # add project folders to python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
+from phase1.metrics import accuracy_score
 from models.svm import MulticlassSVM
 
 # load saved cnn features

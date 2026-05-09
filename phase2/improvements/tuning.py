@@ -2,12 +2,12 @@ import sys
 import os
 import numpy as np
 from sklearn.model_selection import KFold
-from sklearn.metrics import accuracy_score
 
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
+from phase1.metrics import accuracy_score
 from phase1.models.knn import KNN
 from models.svm import MulticlassSVM
 from models.perceptron import MulticlassPerceptron

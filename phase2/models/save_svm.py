@@ -13,8 +13,8 @@ print("Training SVM...")
 # create svm with chosen parameters
 model = MulticlassSVM(
     lr=0.001,
-    lambda_param=0.01,
-    n_iters=10
+    lambda_param=0.001,
+    n_iters=100
 )
 
 model.fit(X_train, y_train)

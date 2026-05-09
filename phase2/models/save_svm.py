@@ -1,5 +1,9 @@
 import os
+import sys
 import numpy as np
+
+# add project root so phase2 imports work
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from phase2.models.svm import MulticlassSVM
 
@@ -13,7 +17,7 @@ print("Training SVM...")
 # create svm with chosen parameters
 model = MulticlassSVM(
     lr=0.001,
-    lambda_param=0.001,
+    lambda_param=0.0001,
     n_iters=100
 )
 

@@ -150,8 +150,9 @@ def tune_perceptron():
 
 if __name__ == "__main__":
 
-    tune_knn()
+
     tune_svm()
     tune_multinomial()
     tune_perceptron()
+    tune_knn()
     
